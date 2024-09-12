@@ -4,12 +4,12 @@ Red_font_prefix="\033[31m"
 Green_background_prefix="\033[42;37m"
 Red_background_prefix="\033[41;37m"
 Font_color_suffix="\033[0m"
-Info="[${Green_font_prefix}信息${Font_color_suffix}]"
-Error="[${Red_font_prefix}错误${Font_color_suffix}]"
-Tip="[${Green_font_prefix}注意${Font_color_suffix}]"
+Info="[${Green_font_prefix}Info${Font_color_suffix}]"
+Error="[${Red_font_prefix}Error${Font_color_suffix}]"
+Tip="[${Green_font_prefix}Notice${Font_color_suffix}]"
 
 check_root() {
-    [[ $EUID != 0 ]] && echo -e "${Error} 当前非ROOT账号(或没有ROOT权限), 无法继续操作, 请更换ROOT账号或使用 ${Green_background_prefix}sudo su${Font_color_suffix} 命令获取临时ROOT权限（执行后可能会提示输入当前账号的密码）。" && exit 1
+    [[ $EUID != 0 ]] && echo -e "${Error} The current account is not a ROOT account (or does not have ROOT permissions), unable to continue operation. Please switch to a ROOT account or use ${Green_background_prefix}sudo su${Font_color_suffix} command to obtain temporary ROOT permissions (you may be prompted to enter the current account password after execution)." && exit 1
 }
 
 install_env_and_full_node() {
@@ -65,7 +65,7 @@ install_env_and_full_node() {
         $command
 
         if [ $? -ne 0 ]; then
-            echo "命令执行失败，退出循环"
+            echo "Command execution failed, exiting the loop"
             exit 1
         fi
 
@@ -80,11 +80,11 @@ create_wallet() {
   sudo yarn cli wallet create
   echo -e "\n"
   sudo yarn cli wallet address
-  echo -e "请保存上面创建好的钱包地址、助记词"
+  echo -e "Please save the wallet address and mnemonic phrase created above."
 }
 
 start_mint_cat() {
-  read -p "请输入想要mint的gas: " newMaxFeeRate
+  read -p "Please enter the gas you want to mint: " newMaxFeeRate
   sed -i "s/\"maxFeeRate\": [0-9]*/\"maxFeeRate\": $newMaxFeeRate/" ~/cat-token-box/packages/cli/config.json
   cd ~/cat-token-box/packages/cli
   bash ~/cat-token-box/packages/cli/mint_script.sh
@@ -99,17 +99,17 @@ check_wallet_balance() {
   sudo yarn cli wallet balances
 }
 
-echo && echo -e " ${Red_font_prefix}dusk_network 一键安装脚本${Font_color_suffix} by \033[1;35moooooyoung\033[0m
-此脚本完全免费开源, 由推特用户 ${Green_font_prefix}@ouyoung11开发${Font_color_suffix}, 
-欢迎关注, 如有收费请勿上当受骗。
+echo && echo -e " ${Red_font_prefix}dusk_network One-click installation script${Font_color_suffix} by \033[1;35moooooyoung\033[0m
+This script is completely free and open source, developed by Twitter user ${Green_font_prefix}@ouyoung11${Font_color_suffix}, 
+you are welcome to follow, if there is a charge, do not be deceived.
  ———————————————————————
- ${Green_font_prefix} 1.安装依赖环境和全节点 ${Font_color_suffix}
- ${Green_font_prefix} 2.创建钱包 ${Font_color_suffix}
- ${Green_font_prefix} 3.开始 mint cat ${Font_color_suffix}
- ${Green_font_prefix} 4.查看节点同步日志 ${Font_color_suffix}
- ${Green_font_prefix} 5.查看钱包余额情况 ${Font_color_suffix}
+ ${Green_font_prefix} 1.Install dependencies and full node ${Font_color_suffix}
+ ${Green_font_prefix} 2.Create wallet ${Font_color_suffix}
+ ${Green_font_prefix} 3.Start minting cat ${Font_color_suffix}
+ ${Green_font_prefix} 4.Check node synchronization log ${Font_color_suffix}
+ ${Green_font_prefix} 5.Check wallet balance ${Font_color_suffix}
  ———————————————————————" && echo
-read -e -p " 请参照上面的步骤，请输入数字:" num
+read -e -p " Please refer to the steps above, please enter the number:" num
 case "$num" in
 1)
     install_env_and_full_node
@@ -128,6 +128,6 @@ case "$num" in
     ;;
 *)
     echo
-    echo -e " ${Error} 请输入正确的数字"
+    echo -e " ${Error} Please enter the correct number"
     ;;
 esac
